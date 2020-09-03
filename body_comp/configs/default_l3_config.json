@@ -1,0 +1,16 @@
+{
+    "sigmoid_output": true,
+    "slice_selection_weights": null,
+    "slice_params": {
+        "L3": {
+            "slice_selection_model_output_index": 0,
+            "class_names": [
+                "muscle",
+                "subcutaneous_fat",
+                "visceral_fat"
+                ],
+            "model_weights": null,
+            "regression_plot_colour": "red"
+        }
+    }
+}
