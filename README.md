@@ -1,6 +1,6 @@
 # CT Body Composition
 
-This repository provides code for training and running body composition estimation models on abdominal CT scans. 
+This repository provides code for training and running body composition estimation models on abdominal CT scans.
 
 ### Getting Started
 
@@ -13,3 +13,9 @@ See the documentation pages for further details:
 * [Docker](docs/docker.md) - For building and using the docker image
 * [Training](docs/training.md) - For training new models
 * [Inference](docs/inference.md) - For running the model on new data
+
+### Acknowledgements
+
+The Python code for body composition estimation was written by Christopher Bridge at MGH & BWH Center for Clinical Data
+Science. The z-score curve fitting R code in the `stats` directory was written by Camden Bay at Brigham and Women's
+Hospital.
