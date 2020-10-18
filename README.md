@@ -40,7 +40,7 @@ This code accompanies the following publication:
 >
 > *Radiology* (In Press)
 
-Furthermore, the same model was developed for the following publication:
+Furthermore, an earlier version of the same model was developed for the following publication:
 
 > *Fully-Automated Analysis of Body Composition from CT in Cancer Patients Using Convolutional Neural Networks*
 >
