@@ -39,6 +39,8 @@ This code accompanies the following publication:
 > K.P. Andriole, B.M. Wolpin, and M.H. Rosenthal
 >
 > *Radiology* (In Press)
+>
+> [Article at RSNA](https://pubs.rsna.org/doi/10.1148/radiol.2020201640)
 
 Furthermore, an earlier version of the same model was developed for the following publication:
 
@@ -49,8 +51,8 @@ Furthermore, an earlier version of the same model was developed for the followin
 >
 > Workshop on Clinical Image-based Procedures, MICCAI, Granada 2018
 >
-> [Springer Link](https://link.springer.com/chapter/10.1007/978-3-030-01201-4_22),
-> [arvix](https://arxiv.org/abs/1808.03844)
+> [Article at Springer Link](https://link.springer.com/chapter/10.1007/978-3-030-01201-4_22),
+> [Article at Arvix](https://arxiv.org/abs/1808.03844)
 
 If you use this code in your publication, please cite these papers.
 
