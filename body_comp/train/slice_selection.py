@@ -15,20 +15,42 @@ from body_comp.train.densenet_regression import DenseNet
 
 
 def train(data_dir, model_output_dir, epochs=100, name=None, batch_size=16,
-          gpus=1, learning_rate=0.1, nb_slices=1, threshold=10.0,
+          gpus=1, learning_rate=0.1, threshold=10.0,
           load_weights=None, initial_epoch=0, nb_layers_per_block=4, nb_blocks=4,
           nb_initial_filters=16, growth_rate=12, compression_rate=0.5,
-          activation='relu', initializer='glorot_uniform', batch_norm=True):
+          activation='relu', initializer='glorot_uniform', batch_norm=True,
+          levels=None):
 
     args = locals()
+
+    if levels is None:
+        levels = ['L3']
+    nb_levels = len(levels)
 
     # Set up dataset
     train_image_dir = os.path.join(data_dir, 'images/train')
     val_image_dir = os.path.join(data_dir, 'images/val')
     train_meta_file = os.path.join(data_dir, 'meta/train.csv')
     val_meta_file = os.path.join(data_dir, 'meta/val.csv')
-    train_labels = pd.read_csv(train_meta_file)['ZOffset'].values
-    val_labels = pd.read_csv(val_meta_file)['ZOffset'].values
+
+    # Backwards-compatible simple case with a single class
+    train_labels_df = pd.read_csv(train_meta_file)
+    val_labels_df = pd.read_csv(val_meta_file)
+    if nb_levels == 1 and 'ZOffset' in train_labels_df.columns:
+        train_labels = train_labels_df['ZOffset'].values
+        val_labels = val_labels_df['ZOffset'].values
+    else:
+        columns = [f'ZOffset_{level}' for level in levels]
+        if any(col not in train_labels_df.columns for col in columns):
+            raise KeyError(
+                f"The expected columns were not found in the training labels CSV file. Expected: {columns}."
+            )
+        if any(col not in val_labels_df.columns for col in columns):
+            raise KeyError(
+                f"The expected columns were not found in the validation labels CSV file. Expected: {columns}."
+            )
+        train_labels = train_labels_df[columns].values
+        val_labels = val_labels_df[columns].values
 
     train_generator = SliceSelectionSequence(
         train_labels, train_image_dir, batch_size, 1000, jitter=True, sigmoid_scale=threshold
@@ -67,7 +89,7 @@ def train(data_dir, model_output_dir, epochs=100, name=None, batch_size=16,
                 sigmoid_output_activation=True,
                 activation_type=activation,
                 initializer=initializer,
-                output_dimension=nb_slices,
+                output_dimension=nb_levels,
                 batch_norm=batch_norm
             )
 

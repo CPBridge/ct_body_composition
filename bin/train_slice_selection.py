@@ -20,6 +20,7 @@ if __name__ == '__main__':
     parser.add_argument('--nb_layers_per_block', default=12, type=int,
                         help="number of layers per block in densenet or resnext")
     parser.add_argument('--nb_blocks', default=4, type=int, help="number of layers of blocks in densenet and resnext")
+    parser.add_argument('--levels', '-L', nargs='+', help="Names of levels of interest as a space-separated list, e.g. L3 T5 T8 T10. Default: L3")
     parser.add_argument('--nb_initial_filters', default=16, type=int,
                         help="number of initial filters in densenet and resnext")
     parser.add_argument('--growth_rate', default=12, type=int, help="densenet growth rate (k) parameter")

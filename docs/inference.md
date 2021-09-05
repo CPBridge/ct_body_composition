@@ -86,7 +86,7 @@ for a particular study.
 
 ### Config File
 
-The process requires a configuration files in the JSON format to set up certain
+The process requires a configuration file in the JSON format to set up certain
 parameters of the inference process. The default configuration file is provided
 in the configs subdirectory of the package. You will need to edit this to
 specify the locations of your trained models.

@@ -31,7 +31,8 @@ def apply_window(image, win_centre, win_width):
 
 def train(data_dir, model_output_dir, name=None, epochs=100, batch_size=16, load_weights=None,
           gpus=1, learning_rate=0.1, decay_half_time=20.0, apply_window_function=False, num_convs=2,
-          activation='relu', compression_channels=[32, 64, 128, 256, 512], decompression_channels=[256, 128, 64, 32]):
+          activation='relu', compression_channels=[32, 64, 128, 256, 512], decompression_channels=[256, 128, 64, 32],
+          thoracic_model=False):
 
     args = locals()
 
@@ -68,10 +69,26 @@ def train(data_dir, model_output_dir, name=None, epochs=100, batch_size=16, load
     with open(args_path, 'w') as json_file:
         json.dump(args, json_file, indent=4)
 
+    if masks_train.min() < 0 or masks_val.min() < 0:
+        raise RuntimeError('Training and validation masks should not contain negative values')
+    if thoracic_model:
+        num_classes = 3
+        if masks_train.max() > 2 or masks_val.max() > 2:
+            raise RuntimeError(
+                'When training a thoracic model, the training and validation masks should contain '
+                'values between 0 and 2 (inclusive).'
+            )
+    else:
+        num_classes = 4
+        if masks_train.max() > 3 or masks_val.max() > 3:
+            raise RuntimeError(
+                'The training and validation masks should contain '
+                'values between 0 and 3 (inclusive).'
+            )
 
     print('Creating and compiling model...')
     model = get_unet_2D(
-        4,
+        num_classes,
         (512, 512, 1),
         num_convs=num_convs,
         activation=activation,

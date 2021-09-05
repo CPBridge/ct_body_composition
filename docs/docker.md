@@ -33,7 +33,7 @@ system (`/path/to/data`) mounted into the container so that it's visible at
 `/data`:
 
 ```bash
-$ sudo docker run --it -v /path/to/data/:/data/ body_comp:latest bash
+$ sudo docker run -it -v /path/to/data/:/data/ body_comp:latest bash
 ```
 
 ### Running Code Inside the Container
