@@ -41,11 +41,11 @@ def train(data_dir, model_output_dir, epochs=100, name=None, batch_size=16,
         val_labels = val_labels_df['ZOffset'].values
     else:
         columns = [f'ZOffset_{level}' for level in levels]
-        if any(col not in train_labels_df.columns):
+        if any(col not in train_labels_df.columns for col in columns):
             raise KeyError(
                 f"The expected columns were not found in the training labels CSV file. Expected: {columns}."
             )
-        if any(col not in val_labels_df.columns):
+        if any(col not in val_labels_df.columns for col in columns):
             raise KeyError(
                 f"The expected columns were not found in the validation labels CSV file. Expected: {columns}."
             )
