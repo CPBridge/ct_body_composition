@@ -1,0 +1,33 @@
+{
+    "sigmoid_output": true,
+    "slice_selection_weights": null,
+    "slice_params": {
+        "T5": {
+            "slice_selection_model_output_index": 0,
+            "class_names": [
+                "muscle",
+                "subcutaneous_fat"
+                ],
+            "model_weights": null,
+            "regression_plot_colour": "red"
+        },
+        "T8": {
+            "slice_selection_model_output_index": 1,
+            "class_names": [
+                "muscle",
+                "subcutaneous_fat"
+                ],
+            "model_weights": null,
+            "regression_plot_colour": "blue"
+        },
+        "T10": {
+            "slice_selection_model_output_index": 2,
+            "class_names": [
+                "muscle",
+                "subcutaneous_fat"
+                ],
+            "model_weights": null,
+            "regression_plot_colour": "green"
+        }
+    }
+}

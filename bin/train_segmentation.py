@@ -15,6 +15,7 @@ if __name__ == '__main__':
     parser.add_argument('--load_weights','-w', help='load weights in this file to initialise model')
     parser.add_argument('--name','-a', help='trained model will be stored in a directory with this name')
     parser.add_argument('--gpus','-g', type=int, default=1, help='number of gpus')
+    parser.add_argument('--thoracic_model','-t', action='store_true', help='Train a thoracic model, with no visceral fat class')
     parser.add_argument('--learning_rate','-l', type=float, default=0.1, help='learning rate')
     parser.add_argument('--decay_half_time','-d', type=float, default=20,
                         help='number of epochs until learning rate should halve')

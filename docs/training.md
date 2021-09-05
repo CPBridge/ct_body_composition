@@ -30,15 +30,17 @@ different models. Its construction is identical to `train_images.npy` (note
 that the number of images in the validation will usually different to the
 number of images in the training set).
 
-`train_masks.py` -- An array the same shape as `train_images.npy`, where all
+`train_masks.npy` -- An array the same shape as `train_images.npy`, where all
 spatial dimensions correspond to the `train_images.npy` array. Each slice of
 the masks array is the segmentation mask for the same slice in the images
 array. The masks should have a `uint8` data type, and each pixel encodes the
 segmentation label of the corresponding pixel in the image array. A value of 0
 denotes the background class, 1 denotes the 'muscle' class, 2 denotes the
-'subcutaneous fat' class, and 3 denotes the 'visceral fat' class.
+'subcutaneous fat' class, and 3 denotes the 'visceral fat' class. If training a
+thoracic model with the `-t` flag, there will be no 'visceral fat' class, i.e.
+there will be only three classes (0, 1, 2) including the background.
 
-`val_masks.py` -- Mask array for the validation images in `val_images.npy`.
+`val_masks.npy` -- Mask array for the validation images in `val_images.npy`.
 Construction is otherwise identical to `train_masks.npy`.
 
 #### Training the Model
@@ -66,6 +68,7 @@ architecture and training procedure. Of particular note are:
 * `-g` - Specify the number of GPUs to use for training
 * `-l` - Specify the initial learning rate
 * `-b` - Specify the batch size
+* `-t` - Specify a thoracic segmentation (with no visceral fat class)
 
 Run the help for a full list of options:
 
@@ -79,8 +82,8 @@ $ python3 train_segmentation.py --help
 #### Preparing Training Data
 
 The training data for the slice selection model consists of CT slices from the
-entire chest/abdomen/pelvis region, with a physical offset from a known L3
-slice. To allow for efficient loading during training, the images should be
+entire chest/abdomen/pelvis region, with a physical offset from the levels of
+interest.  To allow for efficient loading during training, the images should be
 extracted out into .png format.
 
 Each .png image should have pixel values between 0 and 255 as a result of
@@ -97,22 +100,36 @@ slices should be named according to a six-digit integer ID starting at 000000
 and covering all integers between 0 and *N-1*, where *N* is the number of slices
 within that split.
 
+By default, a selection model for a single "level" of interest will be trained.
+In the original work, this was used for the level of the L3 vertebra, although
+the code can be used for any definition of a level of interest provided that
+the relevant labels are provided in the labels CSV (see below). Furthermore, a
+slice selection model for multiple levels of interest may be trained by naming
+multiple levels as a space- separated list with the `-L` command-line argument,
+e.g. `T5 T8 T10 L3`. In this case the resulting model will have multiple
+outputs, one for each of the levels of interest.
+
 Each split should be accompanied by a CSV file that contains the offset from
-the L3 slice in a column called `ZOffset`. The *i*th row of the CSV (starting
-at index 0 after the header row) should contain the *z*-offset for the slice
-with ID *i*. The *z*-offset for a slice should represent its offset above or
-below the L3 slice in mm in the physical space of the scanner. Slices above the
-chosen L3 slice (closer to the head) should be given positive offsets, and
-slices below the chosen L3 slice (closer to the feet) should be given negative
-offsets.  Other columns may be included in this CSV file (e.g. information to
-map back to the original series). Such columns will be ignored by the training
-process. An example CSV file could look like this:
+each level of interest. The CSV should contain a column called
+`ZOffset_<level>` where `<level>` is the name of the level provided by the `-L`
+command line argument, e.g. `ZOffset_L3`. If there is just a single level of
+interest, the level name may be omitted (i.e. the column will be named
+`ZOffset`). The *i*th row of the CSV (starting at index 0 after the header row)
+should contain the *z*-offset(s) for the slice with ID *i*. The *z*-offset for
+a slice from a level of interest should represent its offset above or below the
+level of interest in mm in the physical space of the scanner. Slices above the
+level of interest (closer to the head) should be given positive offsets, and
+slices below the level of interest slice (closer to the feet) should be given
+negative offsets.  Other columns may be included in this CSV file (e.g.
+information to map back to the original series). Such columns will be ignored
+by the training process. An example CSV file with two levels of interest (L3
+and T5) could look like this:
 
 ```
-,SOPInstanceUID,ZOffset
-0,1.2345.678,-234.6
-1,1.2345.789,5.2
-2,1.2345.987,145.3
+,SOPInstanceUID,ZOffset_L3,ZOffset_T5
+0,1.2345.678,-234.6,-417.7
+1,1.2345.789,5.2,-15.4
+2,1.2345.987,145.3,129.8
 ```
 
 The files described above should be placed within a directory with the
@@ -160,6 +177,7 @@ model architecture and training process. Of particular note are:
 * `-g` - Specify the number of GPUs to use for training
 * `-l` - Specify the initial learning rate
 * `-b` - Specify the batch size
+* `-L` - Specify the names of the levels of interest (as a space-separated list)
 
 
 Run the help for a full list of options:
