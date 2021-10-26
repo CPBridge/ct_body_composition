@@ -23,7 +23,7 @@ investigators interested in using our models (including the deep learning models
 models) for their own studies. Please email us to discuss further:
 
 - Chris Bridge, Massachusetts General Hospital (cbridge at partners dot org)
-- Kirti Magudia, UCSF (kirti dot magudia at ucsf dot edu)
+- Kirti Magudia, Duke University (kirti dot magudia at duke dot edu)
 - Michael Rosenthal, Dana Farber Cancer Institute (Michael underscore Rosenthal at dfci dot harvard dot edu)
 - Florian Fintelmann, Massachusetts General Hospital (fintelmann at mgh dot harvard dot edu)
 - Camden Bay, Brigham and Women's Hospital (cpbay at bwh dot harvard dot edu)
