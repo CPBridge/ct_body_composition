@@ -61,3 +61,8 @@ If you use this code in your publication, please cite these papers.
 The Python code for body composition estimation was written by Christopher Bridge at MGH & BWH Center for Clinical Data
 Science. The z-score curve fitting R code in the `stats` directory was written by Camden Bay at Brigham and Women's
 Hospital.
+
+### See Also
+
+The z-score fitting process associated with this work is available
+[here](https://github.com/Rosenthal-Lab-at-Dana-Farber/bodycomp-popref).
