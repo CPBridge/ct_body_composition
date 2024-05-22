@@ -1,5 +1,9 @@
 # CT Body Composition
 
+*NOTE*: As of May 2024, this project is now archived in favor of
+[this](https://github.com/Rosenthal-Lab-at-Dana-Farber/ct_body_composition) updated version that now includes
+model weights.
+
 This repository provides code for training and running body composition estimation models on abdominal CT scans.
 
 ### Getting Started
